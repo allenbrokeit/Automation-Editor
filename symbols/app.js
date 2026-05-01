@@ -1,1 +1,4 @@
-export default {}
+export default {
+  extend: 'Page',
+  rootNode: 'EditorPage',
+}

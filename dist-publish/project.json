@@ -1,0 +1,1197 @@
+{
+  "useReset": true,
+  "useVariable": true,
+  "useFontImport": true,
+  "useIconSprite": true,
+  "useSvgSprite": true,
+  "useDefaultConfig": true,
+  "useDocumentTheme": true,
+  "verbose": false,
+  "globalTheme": "dark",
+  "cases": {},
+  "state": {
+    "nodes": [
+      {
+        "id": "node_1",
+        "type": "action_navigate",
+        "label": "Navigate To URL",
+        "x": 120,
+        "y": 100,
+        "inputs": [],
+        "outputs": [
+          {
+            "id": "out_1",
+            "type": "output",
+            "label": "Next",
+            "relativeX": 320,
+            "relativeY": 55
+          }
+        ],
+        "configuration": {
+          "url": "https://example.com"
+        }
+      },
+      {
+        "id": "node_2",
+        "type": "action_click",
+        "label": "Click Element",
+        "x": 420,
+        "y": 100,
+        "inputs": [
+          {
+            "id": "in_1",
+            "type": "input",
+            "label": "Trigger",
+            "relativeX": 0,
+            "relativeY": 55
+          }
+        ],
+        "outputs": [
+          {
+            "id": "out_2",
+            "type": "output",
+            "label": "Next",
+            "relativeX": 320,
+            "relativeY": 55
+          }
+        ],
+        "configuration": {
+          "selector": "#submit-btn"
+        }
+      },
+      {
+        "id": "node_3",
+        "type": "assert_text",
+        "label": "Assert Text",
+        "x": 720,
+        "y": 100,
+        "inputs": [
+          {
+            "id": "in_2",
+            "type": "input",
+            "label": "Trigger",
+            "relativeX": 0,
+            "relativeY": 55
+          }
+        ],
+        "outputs": [],
+        "configuration": {
+          "selector": ".result",
+          "expected": "Success"
+        }
+      }
+    ],
+    "connections": [
+      {
+        "id": "conn_1",
+        "sourceNodeId": "node_1",
+        "sourceSocketId": "out_1",
+        "targetNodeId": "node_2",
+        "targetSocketId": "in_1"
+      },
+      {
+        "id": "conn_2",
+        "sourceNodeId": "node_2",
+        "sourceSocketId": "out_2",
+        "targetNodeId": "node_3",
+        "targetSocketId": "in_2"
+      }
+    ],
+    "transform": {
+      "x": 40,
+      "y": 40,
+      "scale": 1
+    },
+    "activeSelection": null,
+    "isDraggingNode": false,
+    "draggingNodeId": null,
+    "dragOffset": {
+      "x": 0,
+      "y": 0
+    },
+    "isDraggingWire": false,
+    "draftWire": null,
+    "isPanning": false,
+    "panStart": {
+      "x": 0,
+      "y": 0
+    },
+    "toastVisible": false,
+    "toastMessage": "",
+    "toastType": "error",
+    "showClearConfirm": false
+  },
+  "dependencies": {
+    "smbls": "3.8.9"
+  },
+  "components": {
+    "AutomationNode": {
+      "position": "absolute",
+      "flow": "y",
+      "width": "320px",
+      "borderRadius": "Z",
+      "overflow": "hidden",
+      "cursor": "grab",
+      "userSelect": "none",
+      "boxShadow": "0 A Z rgba(0,0,0,0.3)",
+      "transition": "box-shadow 0.15s ease",
+      "left": "(el, s) => `${s.x || 0}px`",
+      "top": "(el, s) => `${s.y || 0}px`",
+      "isSelected": "(el, s) => {\n    const root = el.call(\"getRootState\");\n    return root.activeSelection && root.activeSelection.id === s.id;\n  }",
+      ".isSelected": {
+        "boxShadow": "(el, s) => `0 0 15px ${el.call(\"nodeTypeColor\", s.type)}66, 0 A Z rgba(0,0,0,0.3)`",
+        "border": "(el, s) => `1px solid ${el.call(\"nodeTypeColor\", s.type)}`",
+        "cursor": "grab",
+        "zIndex": "10"
+      },
+      "theme": "node",
+      "background": "#1a1a2e",
+      "borderTop": "(el, s) => `4px solid ${el.call(\"nodeTypeColor\", s.type)}`",
+      "ariaLabel": "(el, s) => `Node: ${s.label || s.type}`",
+      "role": "group",
+      "tabindex": "0",
+      "NodeHeaderArea": {
+        "flow": "x",
+        "align": "center",
+        "gap": "Y",
+        "padding": "Y Z2",
+        "borderBottom": "1px solid rgba(255,255,255,0.05)",
+        "flexShrink": "0",
+        "NodeTypeIcon": {
+          "extends": "Icon",
+          "icon": "(el, s) => el.call(\"nodeTypeIcon\", s.type)",
+          "width": "Z2",
+          "height": "Z2",
+          "color": "(el, s) => el.call(\"nodeTypeColor\", s.type)",
+          "flexShrink": "0"
+        },
+        "NodeTitleText": {
+          "flex": "1",
+          "text": "(el, s) => s.label || s.type || \"Node\"",
+          "fontSize": "Y",
+          "fontWeight": "700",
+          "color": "title",
+          "overflow": "hidden",
+          "textOverflow": "ellipsis",
+          "whiteSpace": "nowrap"
+        },
+        "NodeTypeTag": {
+          "text": "(el, s) => (s.type || \"\").replace(\"_\", \" \")",
+          "fontSize": "Y",
+          "fontWeight": "500",
+          "color": "(el, s) => el.call(\"nodeTypeColor\", s.type)",
+          "background": "(el, s) => el.call(\"nodeTypeColor\", s.type) + \"22\"",
+          "padding": "X Y",
+          "borderRadius": "X"
+        }
+      },
+      "NodeBodyArea": {
+        "flow": "x",
+        "gap": "0",
+        "align": "stretch",
+        "NodeInputsCol": {
+          "flow": "y",
+          "gap": "Y",
+          "padding": "Z Z2",
+          "flexShrink": "0",
+          "minWidth": "max-content",
+          "align": "flex-start flex-start",
+          "children": "(el, s) => (s.inputs || []).map((sock) => ({\n        ...sock,\n        nodeId: s.id\n      }))",
+          "childExtends": "SocketDot",
+          "childrenAs": "state"
+        },
+        "NodeConfigArea": {
+          "flex": "1",
+          "flow": "y",
+          "gap": "X",
+          "margin": "Z 0",
+          "padding": "Y",
+          "background": "rgba(0,0,0,0.15)",
+          "borderRadius": "Y",
+          "border": "1px solid rgba(255,255,255,0.03)",
+          "overflow": "hidden",
+          "ConfigContent": {
+            "text": "(el, s) => {\n          const cfg = s.configuration || {};\n          const entries = Object.entries(cfg);\n          if (!entries.length) return \"No config\";\n          return entries.map(([k, v]) => `${k}: ${v}`).join(\"\\n\");\n        }",
+            "fontSize": "X",
+            "color": "caption",
+            "lineHeight": "1.4",
+            "whiteSpace": "pre-wrap",
+            "wordBreak": "break-word",
+            "display": "-webkit-box",
+            "WebkitLineClamp": "5",
+            "WebkitBoxOrient": "vertical"
+          }
+        },
+        "NodeOutputsCol": {
+          "flow": "y",
+          "gap": "Y",
+          "padding": "Z Z2",
+          "flexShrink": "0",
+          "minWidth": "max-content",
+          "align": "flex-start flex-end",
+          "children": "(el, s) => (s.outputs || []).map((sock) => ({\n        ...sock,\n        nodeId: s.id\n      }))",
+          "childExtends": "SocketDot",
+          "childrenAs": "state"
+        }
+      },
+      "onMousedown": "(e, el, s) => {\n    if (e.button !== 0) return;\n    e.stopPropagation();\n    const root = el.call(\"getRootState\");\n    if (root.isDraggingWire) return;\n    const transform = root.transform || { x: 0, y: 0, scale: 1 };\n    const offsetX = (e.clientX - transform.x) / transform.scale - (s.x || 0);\n    const offsetY = (e.clientY - transform.y) / transform.scale - (s.y || 0);\n    root.update({\n      activeSelection: { type: \"node\", id: s.id },\n      isDraggingNode: true,\n      draggingNodeId: s.id,\n      dragOffset: { x: offsetX, y: offsetY }\n    });\n  }",
+      "onClick": "(e, el, s) => {\n    e.stopPropagation();\n    const root = el.call(\"getRootState\");\n    root.update({ activeSelection: { type: \"node\", id: s.id } });\n  }"
+    },
+    "CanvasContainer": {
+      "position": "absolute",
+      "top": "0",
+      "left": "0",
+      "width": "100%",
+      "height": "100%",
+      "transformOrigin": "0 0",
+      "willChange": "transform",
+      "transform": "(el, s) => {\n    const root = s.root || s;\n    const t = root.transform || { x: 0, y: 0, scale: 1 };\n    return `translate(${t.x}px, ${t.y}px) scale(${t.scale})`;\n  }",
+      "SvgWireLayer": {
+        "extends": "SvgWireLayer"
+      },
+      "NodesGroup": {
+        "position": "absolute",
+        "top": "0",
+        "left": "0",
+        "width": "100%",
+        "height": "100%",
+        "zIndex": "2",
+        "children": "(el, s) => {\n      const root = s.root || s;\n      return root.nodes || [];\n    }",
+        "childExtends": "AutomationNode",
+        "childrenAs": "state"
+      }
+    },
+    "CanvasViewport": {
+      "flex": "1",
+      "position": "relative",
+      "overflow": "hidden",
+      "theme": "canvas",
+      "cursor": "default",
+      "backgroundImage": "(el, s) => {\n    const root = s.root || s;\n    const t = root.transform || { x: 0, y: 0, scale: 1 };\n    const dotSize = Math.max(1, Math.round(2 * t.scale));\n    const spacing = Math.round(24 * t.scale);\n    return `radial-gradient(circle, rgba(100,120,200,0.25) ${dotSize}px, transparent ${dotSize}px)`;\n  }",
+      "backgroundSize": "(el, s) => {\n    const root = s.root || s;\n    const t = root.transform || { x: 0, y: 0, scale: 1 };\n    const spacing = Math.max(10, Math.round(24 * t.scale));\n    return `${spacing}px ${spacing}px`;\n  }",
+      "backgroundPosition": "(el, s) => {\n    const root = s.root || s;\n    const t = root.transform || { x: 0, y: 0, scale: 1 };\n    return `${t.x % Math.max(10, Math.round(24 * t.scale))}px ${t.y % Math.max(10, Math.round(24 * t.scale))}px`;\n  }",
+      "CanvasContainer": {},
+      "ZoomChip": {
+        "position": "absolute",
+        "bottom": "Z",
+        "right": "Z",
+        "flow": "x",
+        "align": "center",
+        "gap": "Y",
+        "padding": "X Z",
+        "borderRadius": "Y",
+        "theme": "dialog",
+        "fontSize": "Y",
+        "color": "caption",
+        "fontWeight": "600",
+        "pointerEvents": "none",
+        "zIndex": "50",
+        "ZoomValue": {
+          "text": "(el, s) => {\n        const root = s.root || s;\n        const scale = (root.transform || { scale: 1 }).scale;\n        return Math.round(scale * 100) + \"%\";\n      }"
+        }
+      },
+      "onWheel": "(e, el, s) => {\n    e.preventDefault();\n    const rootState = el.call(\"getRootState\");\n    const t = rootState.transform || { x: 0, y: 0, scale: 1 };\n    const direction = e.deltaY > 0 ? -1 : 1;\n    const factor = 0.08;\n    const newScale = Math.min(4, Math.max(0.1, t.scale + direction * factor * t.scale));\n    const rect = el.node.getBoundingClientRect();\n    const mouseX = e.clientX - rect.left;\n    const mouseY = e.clientY - rect.top;\n    const scaleRatio = newScale / t.scale;\n    const newX = mouseX - scaleRatio * (mouseX - t.x);\n    const newY = mouseY - scaleRatio * (mouseY - t.y);\n    rootState.update({ transform: { x: newX, y: newY, scale: newScale } });\n  }",
+      "onMousedown": "(e, el, s) => {\n    const rootState = el.call(\"getRootState\");\n    const isSpacePressed = rootState.isSpacePressed;\n    if (e.button === 1 || e.button === 0 && isSpacePressed) {\n      e.preventDefault();\n      rootState.update({ isPanning: true, panStart: { x: e.clientX, y: e.clientY } });\n      el.node.style.cursor = \"grabbing\";\n      return;\n    }\n    if (e.button === 0 && e.target === el.node) {\n      rootState.update({ activeSelection: null });\n    }\n  }",
+      "onMousemove": "(e, el, s) => {\n    const rootState = el.call(\"getRootState\");\n    if (rootState.isPanning) {\n      const t = rootState.transform || { x: 0, y: 0, scale: 1 };\n      const dx = e.clientX - (rootState.panStart?.x || e.clientX);\n      const dy = e.clientY - (rootState.panStart?.y || e.clientY);\n      rootState.update({\n        transform: { ...t, x: t.x + dx, y: t.y + dy },\n        panStart: { x: e.clientX, y: e.clientY }\n      });\n      return;\n    }\n    if (rootState.isDraggingNode && rootState.draggingNodeId) {\n      const transform = rootState.transform || { x: 0, y: 0, scale: 1 };\n      const canvasX = (e.clientX - transform.x) / transform.scale;\n      const canvasY = (e.clientY - transform.y) / transform.scale;\n      const offset = rootState.dragOffset || { x: 0, y: 0 };\n      const newX = canvasX - offset.x;\n      const newY = canvasY - offset.y;\n      const targetNode = (rootState.nodes || []).find((n) => n.id === rootState.draggingNodeId);\n      if (targetNode) {\n        targetNode.x = newX;\n        targetNode.y = newY;\n        rootState.update({ forceRender: Date.now() });\n      }\n      return;\n    }\n    if (rootState.isDraggingWire && rootState.draftWire) {\n      const rect = el.node.getBoundingClientRect();\n      const t = rootState.transform || { x: 0, y: 0, scale: 1 };\n      const canvasX = (e.clientX - rect.left - t.x) / t.scale;\n      const canvasY = (e.clientY - rect.top - t.y) / t.scale;\n      rootState.update({\n        draftWire: { ...rootState.draftWire, x2: canvasX, y2: canvasY }\n      });\n    }\n  }",
+      "onMouseup": "(e, el, s) => {\n    const rootState = el.call(\"getRootState\");\n    if (rootState.isPanning) {\n      rootState.update({ isPanning: false });\n      el.node.style.cursor = rootState.isSpacePressed ? \"grab\" : \"\";\n    }\n    if (rootState.isDraggingNode) {\n      rootState.update({ isDraggingNode: false, draggingNodeId: null, dragOffset: { x: 0, y: 0 } });\n    }\n    if (rootState.isDraggingWire) {\n      rootState.update({ isDraggingWire: false, draftWire: null });\n    }\n  }",
+      "onMouseleave": "(e, el, s) => {\n    const rootState = el.call(\"getRootState\");\n    rootState.update({ isPanning: false, isDraggingNode: false, isDraggingWire: false });\n    el.node.style.cursor = \"\";\n  }",
+      "onDragover": "(e) => e.preventDefault()",
+      "onDrop": "(e, el, s) => {\n    e.preventDefault();\n    const nodeType = e.dataTransfer.getData(\"nodeType\");\n    if (!nodeType) return;\n    const rect = el.node.getBoundingClientRect();\n    const rootState = el.call(\"getRootState\");\n    const t = rootState.transform || { x: 0, y: 0, scale: 1 };\n    const canvasX = (e.clientX - rect.left - t.x) / t.scale;\n    const canvasY = (e.clientY - rect.top - t.y) / t.scale;\n    el.call(\"addNode\", nodeType, canvasX, canvasY);\n  }"
+    },
+    "ErrorToast": {
+      "position": "absolute",
+      "bottom": "B",
+      "left": "50%",
+      "transform": "translateX(-50%)",
+      "zIndex": "500",
+      "flow": "x",
+      "align": "center",
+      "gap": "Z",
+      "padding": "Z B",
+      "borderRadius": "Z",
+      "boxShadow": "0 C Z rgba(0,0,0,0.4)",
+      "pointerEvents": "all",
+      "cursor": "default",
+      "minWidth": "G",
+      "maxWidth": "J",
+      "if": "(el, s) => {\n    const root = s.root || s;\n    return root.toastVisible;\n  }",
+      "isError": "(el, s) => {\n    const root = s.root || s;\n    return root.toastType === \"error\";\n  }",
+      "isSuccess": "(el, s) => {\n    const root = s.root || s;\n    return root.toastType === \"success\";\n  }",
+      "theme": "(el, s) => {\n    const root = s.root || s;\n    return root.toastType === \"success\" ? \"toast-success\" : \"toast\";\n  }",
+      "ToastIconWrap": {
+        "extends": "Icon",
+        "icon": "(el, s) => {\n      const root = s.root || s;\n      return root.toastType === \"success\" ? \"assert\" : \"warning\";\n    }",
+        "width": "A",
+        "height": "A",
+        "color": "white",
+        "flexShrink": "0"
+      },
+      "ToastMsg": {
+        "text": "(el, s) => {\n      const root = s.root || s;\n      return root.toastMessage || \"Notification\";\n    }",
+        "fontSize": "Z",
+        "fontWeight": "600",
+        "color": "white",
+        "flex": "1"
+      },
+      "ToastCloseBtn": {
+        "tag": "button",
+        "extends": "Icon",
+        "icon": "close",
+        "width": "A",
+        "height": "A",
+        "color": "white.7",
+        "background": "transparent",
+        "border": "none",
+        "cursor": "pointer",
+        "padding": "0",
+        "ariaLabel": "Dismiss notification",
+        "flexShrink": "0",
+        "onClick": "(e, el, s) => {\n      const root = s.root || s;\n      root.update({ toastVisible: false, toastMessage: \"\" });\n    }"
+      }
+    },
+    "NodePaletteItem": {
+      "flow": "x",
+      "align": "center",
+      "gap": "Z",
+      "padding": "Z A",
+      "borderRadius": "Y",
+      "cursor": "grab",
+      "userSelect": "none",
+      "transition": "all 0.15s ease",
+      "theme": "paletteItem",
+      "draggable": "true",
+      "ariaLabel": "(el, s) => `Add ${s.label || \"node\"} to canvas`",
+      "ariaRole": "button",
+      "tabindex": "0",
+      "PaletteIconWrap": {
+        "width": "A1",
+        "height": "A1",
+        "borderRadius": "Y",
+        "align": "center center",
+        "flexShrink": "0",
+        "background": "(el, s) => (s.color || \"#0474f2\") + \"22\"",
+        "PaletteNodeIcon": {
+          "extends": "Icon",
+          "icon": "(el, s) => s.icon || \"node\"",
+          "width": "Z2",
+          "height": "Z2",
+          "color": "(el, s) => s.color || \"blue\""
+        }
+      },
+      "PaletteLabel": {
+        "text": "(el, s) => s.label || \"Node\"",
+        "fontSize": "Y",
+        "fontWeight": "600",
+        "color": "title",
+        "flex": "1"
+      },
+      "PaletteDragHint": {
+        "extends": "Icon",
+        "icon": "drag",
+        "width": "Z1",
+        "height": "Z1",
+        "color": "disabled",
+        "opacity": "0",
+        "transition": "opacity 0.15s ease"
+      },
+      ":hover": {
+        ".PaletteDragHint": {
+          "opacity": "1"
+        }
+      },
+      "onDragstart": "(e, el, s) => {\n    e.dataTransfer.setData(\"nodeType\", s.type || \"action_click\");\n    e.dataTransfer.effectAllowed = \"copy\";\n  }",
+      "onKeydown": "(e, el, s) => {\n    if (e.key === \"Enter\" || e.key === \" \") {\n      e.preventDefault();\n      el.call(\"addNode\", s.type || \"action_click\", 200, 200);\n    }\n  }"
+    },
+    "NodeSidebar": {
+      "tag": "aside",
+      "flow": "y",
+      "width": "F1",
+      "flexShrink": "0",
+      "height": "100%",
+      "overflowY": "auto",
+      "theme": "sidebar",
+      "ariaLabel": "Node palette",
+      "SidebarHead": {
+        "flow": "x",
+        "align": "center space-between",
+        "padding": "Z A",
+        "borderBottom": "1px solid",
+        "borderColor": "line",
+        "SidebarTitle": {
+          "text": "Nodes",
+          "fontSize": "Z",
+          "fontWeight": "700",
+          "color": "title"
+        },
+        "SidebarCount": {
+          "text": "(el, s) => {\n        const root = s.root || s;\n        return (root.nodes || []).length + \" on canvas\";\n      }",
+          "fontSize": "Y",
+          "color": "caption"
+        }
+      },
+      "SidebarBody": {
+        "flow": "y",
+        "padding": "Z",
+        "gap": "Y",
+        "ActionsLabel": {
+          "text": "ACTIONS",
+          "fontSize": "Y",
+          "fontWeight": "700",
+          "color": "disabled",
+          "letterSpacing": "0.8px",
+          "padding": "Y 0 X"
+        },
+        "NavNode": {
+          "extends": "NodePaletteItem",
+          "state": {
+            "type": "action_navigate",
+            "label": "Navigate",
+            "icon": "navigate",
+            "color": "#0474f2",
+            "group": "Actions"
+          }
+        },
+        "ClickNode": {
+          "extends": "NodePaletteItem",
+          "state": {
+            "type": "action_click",
+            "label": "Click",
+            "icon": "click",
+            "color": "#0474f2",
+            "group": "Actions"
+          }
+        },
+        "TypeNode": {
+          "extends": "NodePaletteItem",
+          "state": {
+            "type": "action_type",
+            "label": "Type Text",
+            "icon": "type",
+            "color": "#0474f2",
+            "group": "Actions"
+          }
+        },
+        "ScrollNode": {
+          "extends": "NodePaletteItem",
+          "state": {
+            "type": "action_scroll",
+            "label": "Scroll",
+            "icon": "scroll",
+            "color": "#0474f2",
+            "group": "Actions"
+          }
+        },
+        "WaitNode": {
+          "extends": "NodePaletteItem",
+          "state": {
+            "type": "action_wait",
+            "label": "Wait",
+            "icon": "wait",
+            "color": "#e97c16",
+            "group": "Actions"
+          }
+        },
+        "ScreenshotNode": {
+          "extends": "NodePaletteItem",
+          "state": {
+            "type": "action_screenshot",
+            "label": "Screenshot",
+            "icon": "screenshot",
+            "color": "#4db852",
+            "group": "Actions"
+          }
+        },
+        "AssertionsLabel": {
+          "text": "ASSERTIONS",
+          "fontSize": "Y",
+          "fontWeight": "700",
+          "color": "disabled",
+          "letterSpacing": "0.8px",
+          "padding": "A 0 X",
+          "borderTop": "1px solid",
+          "borderColor": "line",
+          "marginTop": "X"
+        },
+        "AssertTextNode": {
+          "extends": "NodePaletteItem",
+          "state": {
+            "type": "assert_text",
+            "label": "Assert Text",
+            "icon": "assert",
+            "color": "#4db852",
+            "group": "Assertions"
+          }
+        },
+        "LogicLabel": {
+          "text": "LOGIC",
+          "fontSize": "Y",
+          "fontWeight": "700",
+          "color": "disabled",
+          "letterSpacing": "0.8px",
+          "padding": "A 0 X",
+          "borderTop": "1px solid",
+          "borderColor": "line",
+          "marginTop": "X"
+        },
+        "ConditionNode": {
+          "extends": "NodePaletteItem",
+          "state": {
+            "type": "logic_condition",
+            "label": "Condition",
+            "icon": "condition",
+            "color": "#e97c16",
+            "group": "Logic"
+          }
+        },
+        "LoopNode": {
+          "extends": "NodePaletteItem",
+          "state": {
+            "type": "logic_loop",
+            "label": "Loop",
+            "icon": "loop",
+            "color": "#e97c16",
+            "group": "Logic"
+          }
+        }
+      },
+      "SidebarFooter": {
+        "padding": "Z A",
+        "borderTop": "1px solid",
+        "borderColor": "line",
+        "marginTop": "auto",
+        "FooterTip": {
+          "text": "Drag nodes onto the canvas to build your workflow",
+          "fontSize": "Y",
+          "color": "disabled",
+          "lineHeight": "1.5"
+        }
+      }
+    },
+    "NodeSocketRow": {
+      "flow": "y",
+      "gap": "Y",
+      "width": "100%"
+    },
+    "SocketDot": {
+      "position": "relative",
+      "flow": "x",
+      "align": "center",
+      "gap": "Y",
+      "cursor": "crosshair",
+      "userSelect": "none",
+      "isOutput": "(el, s) => s.type === \"output\"",
+      ".isOutput": {
+        "flexDirection": "row-reverse"
+      },
+      "SocketHitArea": {
+        "width": "B",
+        "height": "B",
+        "borderRadius": "50%",
+        "align": "center center",
+        "flexShrink": "0",
+        "cursor": "crosshair",
+        "position": "relative",
+        "background": "rgba(0,0,0,0.01)",
+        "SocketVisual": {
+          "width": "Z2",
+          "height": "Z2",
+          "borderRadius": "50%",
+          "border": "2px solid",
+          "borderColor": "(el, s) => s.type === \"output\" ? \"socketOutput\" : \"socketInput\"",
+          "background": "transparent",
+          "transition": "all 0.1s ease",
+          "boxSizing": "border-box",
+          "isConnected": "(el, s) => {\n        const rootState = el.call(\"getRootState\");\n        if (!rootState) return false;\n        return (rootState.connections || []).some(\n          (c) => c.sourceSocketId === s.id || c.targetSocketId === s.id\n        );\n      }",
+          ".isConnected": {
+            "background": "(el, s) => s.type === \"output\" ? \"socketOutput\" : \"socketInput\"",
+            "boxShadow": "(el, s) => {\n          const col = s.type === \"output\" ? \"#0474f2\" : \"#4db852\";\n          return `0 0 6px ${col}88`;\n        }"
+          }
+        },
+        "onMousedown": "(e, el, s) => {\n      e.stopPropagation();\n      e.preventDefault();\n      if (s.type !== \"output\") return;\n      const rootState = el.call(\"getRootState\");\n      const nodeSocket = el.call(\"getSocketCoords\", rootState, s.nodeId, s.id);\n      if (!nodeSocket) return;\n      rootState.update({\n        isDraggingWire: true,\n        draftWire: {\n          sourceNodeId: s.nodeId,\n          sourceSocketId: s.id,\n          x1: nodeSocket.x,\n          y1: nodeSocket.y,\n          x2: nodeSocket.x,\n          y2: nodeSocket.y\n        }\n      });\n    }",
+        "onMouseup": "(e, el, s) => {\n      if (s.type !== \"input\") return;\n      e.stopPropagation();\n      const rootState = el.call(\"getRootState\");\n      if (!rootState.isDraggingWire || !rootState.draftWire) return;\n      const draft = rootState.draftWire;\n      if (draft.sourceNodeId === s.nodeId) {\n        rootState.update({ isDraggingWire: false, draftWire: null });\n        return;\n      }\n      const conns = rootState.connections || [];\n      const existingIdx = conns.findIndex((c) => c.targetNodeId === s.nodeId && c.targetSocketId === s.id);\n      if (existingIdx !== -1) {\n        conns.splice(existingIdx, 1);\n      }\n      const connId = \"conn_\" + Date.now() + \"_\" + Math.random().toString(36).slice(2, 5);\n      const newConn = {\n        id: connId,\n        sourceNodeId: draft.sourceNodeId,\n        sourceSocketId: draft.sourceSocketId,\n        targetNodeId: s.nodeId,\n        targetSocketId: s.id\n      };\n      conns.push(newConn);\n      rootState.update({\n        isDraggingWire: false,\n        draftWire: null,\n        forceRender: Date.now()\n      });\n      el.call(\"showToast\", \"Wire Connected successfully!\", \"success\");\n    }"
+      },
+      "SocketLabel": {
+        "text": "(el, s) => s.label || \"\"",
+        "fontSize": "Y",
+        "color": "caption",
+        "pointerEvents": "none"
+      }
+    },
+    "SvgWireLayer": {
+      "tag": "svg",
+      "position": "absolute",
+      "top": "0",
+      "left": "0",
+      "width": "100%",
+      "height": "100%",
+      "overflow": "visible",
+      "pointerEvents": "none",
+      "zIndex": "1",
+      "onRender": "(el, s) => {\n    console.error(\"SvgWireLayer Mounted! State keys:\", Object.keys(s || {}), \"Connections length:\", s?.connections?.length);\n  }",
+      "attr": {
+        "xmlns": "http://www.w3.org/2000/svg"
+      },
+      "WireGroup": {
+        "tag": "g",
+        "attr": {
+          "data-connections": "(el, s) => {\n        const root = s.root || s;\n        return (root.connections || []).length;\n      }",
+          "data-force-render": "(el, s) => {\n        const root = s.root || s;\n        return root.forceRender;\n      }"
+        },
+        "children": "(el, s) => {\n      const root = s.root || s;\n      const connections = root.connections || [];\n      const obj = {};\n      connections.forEach((c) => {\n        const safeKey = \"Wire\" + c.id.replace(/[^a-zA-Z0-9]/g, \"\");\n        obj[safeKey] = {\n          extends: \"WirePath\",\n          state: c\n          // Manually bind the specific connection state\n        };\n      });\n      return obj;\n    }"
+      },
+      "DraftWireGroup": {
+        "tag": "g",
+        "if": "(el, s) => {\n      const root = s.root || s;\n      return root.isDraggingWire && root.draftWire;\n    }",
+        "DraftWirePath": {
+          "tag": "path",
+          "pointerEvents": "none",
+          "attr": {
+            "d": "(el, s) => {\n          const root = s.root || s;\n          const w = root.draftWire;\n          if (!w) return \"\";\n          return el.call(\"getBezierPath\", w.x1, w.y1, w.x2, w.y2);\n        }",
+            "stroke": "#a3cdfd",
+            "stroke-width": "2",
+            "fill": "none",
+            "stroke-linecap": "round",
+            "stroke-dasharray": "6 4"
+          }
+        }
+      }
+    },
+    "TopToolbar": {
+      "tag": "header",
+      "position": "sticky",
+      "top": "0",
+      "width": "100%",
+      "zIndex": "200",
+      "flow": "x",
+      "align": "center space-between",
+      "padding": "Z B",
+      "theme": "toolbar",
+      "boxShadow": "0 1px 0 rgba(0,0,0,0.15)",
+      "ToolbarBrand": {
+        "flow": "x",
+        "align": "center",
+        "gap": "Z",
+        "BrandIcon": {
+          "extends": "Icon",
+          "icon": "node",
+          "width": "A1",
+          "height": "A1",
+          "color": "blue"
+        },
+        "BrandText": {
+          "flow": "y",
+          "gap": "0",
+          "BrandTitle": {
+            "text": "AutomationEditor",
+            "fontSize": "Z2",
+            "fontWeight": "700",
+            "color": "title",
+            "letterSpacing": "-0.3px"
+          },
+          "BrandSub": {
+            "text": "Visual Workflow Builder",
+            "fontSize": "Y",
+            "color": "caption",
+            "fontWeight": "400"
+          }
+        }
+      },
+      "ToolbarCenter": {
+        "flow": "x",
+        "align": "center",
+        "gap": "Y",
+        "fontSize": "Y",
+        "color": "caption",
+        "HintText": {
+          "text": "Middle-click to pan  ·  Scroll to zoom  ·  Delete to remove",
+          "fontSize": "A",
+          "color": "title"
+        }
+      },
+      "ToolbarActions": {
+        "flow": "x",
+        "align": "center",
+        "gap": "Z",
+        "SaveBtn": {
+          "tag": "button",
+          "extends": "Button",
+          "theme": "primary",
+          "flow": "x",
+          "align": "center",
+          "gap": "Y",
+          "padding": "Y Z2",
+          "fontSize": "Y",
+          "fontWeight": "600",
+          "cursor": "pointer",
+          "borderRadius": "Y",
+          "border": "none",
+          "ariaLabel": "Save workspace as JSON",
+          "SaveIcon": {
+            "extends": "Icon",
+            "icon": "save",
+            "width": "Z2",
+            "height": "Z2"
+          },
+          "SaveLabel": {
+            "text": "Save"
+          },
+          "onClick": "(e, el, s) => el.call(\"saveWorkspace\")"
+        },
+        "LoadBtn": {
+          "tag": "button",
+          "flow": "x",
+          "align": "center",
+          "gap": "Y",
+          "padding": "Y Z2",
+          "fontSize": "Y",
+          "fontWeight": "600",
+          "cursor": "pointer",
+          "borderRadius": "Y",
+          "border": "1px solid",
+          "theme": "bordered",
+          "color": "black",
+          "ariaLabel": "Load workspace from JSON file",
+          "LoadIcon": {
+            "extends": "Icon",
+            "icon": "upload",
+            "width": "Z2",
+            "height": "Z2"
+          },
+          "LoadLabel": {
+            "text": "Load"
+          },
+          "onClick": "(e, el) => {\n        const fileInput = el.lookup(\"EditorPage\").lookdown(\"HiddenFileInput\");\n        if (fileInput) fileInput.node.click();\n      }"
+        },
+        "DividerLine": {
+          "width": "1px",
+          "height": "A1",
+          "background": "line",
+          "opacity": ".5"
+        },
+        "ClearBtn": {
+          "tag": "button",
+          "flow": "x",
+          "align": "center",
+          "gap": "Y",
+          "padding": "Y Z2",
+          "fontSize": "Y",
+          "fontWeight": "600",
+          "cursor": "pointer",
+          "borderRadius": "Y",
+          "border": "1px solid",
+          "theme": "bordered",
+          "color": "caption",
+          "ariaLabel": "Clear canvas",
+          "ClearIcon": {
+            "extends": "Icon",
+            "icon": "trash",
+            "width": "Z2",
+            "height": "Z2"
+          },
+          "ClearLabel": {
+            "text": "Clear"
+          },
+          "onClick": "(e, el, s) => {\n        const root = s.root || s;\n        root.update({\n          nodes: [],\n          connections: [],\n          activeSelection: null,\n          transform: { x: 0, y: 0, scale: 1 }\n        });\n      }"
+        },
+        "FitBtn": {
+          "tag": "button",
+          "padding": "Y",
+          "cursor": "pointer",
+          "borderRadius": "Y",
+          "border": "1px solid",
+          "theme": "bordered",
+          "color": "caption",
+          "ariaLabel": "Fit view to content",
+          "title": "Fit view",
+          "FitIcon": {
+            "extends": "Icon",
+            "icon": "fitView",
+            "width": "Z2",
+            "height": "Z2"
+          },
+          "onClick": "(e, el, s) => {\n        const root = s.root || s;\n        root.update({ transform: { x: 40, y: 40, scale: 1 } });\n      }"
+        }
+      }
+    },
+    "WirePath": {
+      "tag": "svg",
+      "width": "100%",
+      "height": "100%",
+      "overflow": "visible",
+      "key": "(el, s) => s.id",
+      "WirePathBg": {
+        "tag": "path",
+        "namespace": "http://www.w3.org/2000/svg",
+        "attr": {
+          "d": "(el, s) => {\n        const rootState = el.call(\"getRootState\");\n        const _tickle = rootState.forceRender;\n        const coords = el.call(\"getWireCoords\", rootState, s.sourceNodeId, s.sourceSocketId, s.targetNodeId, s.targetSocketId);\n        if (!coords) return \"\";\n        return el.call(\"getBezierPath\", coords.x1, coords.y1, coords.x2, coords.y2);\n      }",
+          "stroke": "rgba(0,0,0,0.3)",
+          "stroke-width": "6",
+          "fill": "none",
+          "stroke-linecap": "round"
+        }
+      },
+      "WirePathMain": {
+        "tag": "path",
+        "namespace": "http://www.w3.org/2000/svg",
+        "cursor": "pointer",
+        "filter": "(el, s) => {\n      const rootState = el.call(\"getRootState\");\n      const isSelected = rootState.activeSelection && rootState.activeSelection.type === \"wire\" && rootState.activeSelection.id === s.id;\n      return isSelected ? \"drop-shadow(0 0 8px #a3cdfd) drop-shadow(0 0 16px #a3cdfd)\" : \"none\";\n    }",
+        "attr": {
+          "d": "(el, s) => {\n        const rootState = el.call(\"getRootState\");\n        const _tickle = rootState.forceRender;\n        const coords = el.call(\"getWireCoords\", rootState, s.sourceNodeId, s.sourceSocketId, s.targetNodeId, s.targetSocketId);\n        if (!coords) return \"\";\n        return el.call(\"getBezierPath\", coords.x1, coords.y1, coords.x2, coords.y2);\n      }",
+          "stroke": "(el, s) => {\n        const rootState = el.call(\"getRootState\");\n        const isSelected = rootState.activeSelection && rootState.activeSelection.type === \"wire\" && rootState.activeSelection.id === s.id;\n        return isSelected ? \"#a3cdfd\" : \"#0474f2\";\n      }",
+          "stroke-width": "(el, s) => {\n        const rootState = el.call(\"getRootState\");\n        const isSelected = rootState.activeSelection && rootState.activeSelection.type === \"wire\" && rootState.activeSelection.id === s.id;\n        return isSelected ? \"4\" : \"3\";\n      }",
+          "fill": "none",
+          "stroke-linecap": "round",
+          "pointer-events": "stroke"
+        },
+        "onClick": "(e, el, s) => {\n      e.stopPropagation();\n      const rootState = el.call(\"getRootState\");\n      rootState.update({ activeSelection: { type: \"wire\", id: s.id } });\n    }"
+      }
+    }
+  },
+  "snippets": {},
+  "pages": {
+    "/": {
+      "extends": "Page",
+      "flow": "y",
+      "width": "100vw",
+      "height": "100vh",
+      "overflow": "hidden",
+      "theme": "document",
+      "position": "relative",
+      "onRender": "(el) => {\n    if (el.__keyboardBound) return;\n    el.__keyboardBound = true;\n    window.addEventListener(\"keydown\", (e) => {\n      const rootState = el.call(\"getRootState\");\n      if (e.key === \" \" && e.target === document.body) {\n        e.preventDefault();\n        rootState.update({ isSpacePressed: true });\n      }\n      if ((e.key === \"Delete\" || e.key === \"Backspace\") && e.target === document.body) {\n        el.call(\"deleteSelection\");\n      }\n    });\n    window.addEventListener(\"keyup\", (e) => {\n      if (e.key === \" \") {\n        const rootState = el.call(\"getRootState\");\n        rootState.update({ isSpacePressed: false, isPanning: false });\n      }\n    });\n  }",
+      "TopToolbar": {},
+      "EditorBody": {
+        "flow": "x",
+        "flex": "1",
+        "overflow": "hidden",
+        "minHeight": "0",
+        "NodeSidebar": {},
+        "CanvasViewport": {}
+      },
+      "HiddenFileInput": {
+        "tag": "input",
+        "type": "file",
+        "accept": ".json,application/json",
+        "position": "absolute",
+        "opacity": "0",
+        "pointerEvents": "none",
+        "width": "0",
+        "height": "0",
+        "overflow": "hidden",
+        "ariaHidden": "true",
+        "tabindex": "-1",
+        "onChange": "(e, el, s) => {\n      const file = e.target.files && e.target.files[0];\n      if (!file) return;\n      el.call(\"loadWorkspace\", file);\n      el.node.value = \"\";\n    }"
+      },
+      "ErrorToast": {}
+    }
+  },
+  "functions": {
+    "addNode": "function addNode2(nodeType, x, y) {\n  const root = this.call(\"getRootState\");\n  const id = \"node_\" + Date.now() + \"_\" + Math.random().toString(36).slice(2, 7);\n  const nodeTemplates = {\n    action_click: {\n      label: \"Click Element\",\n      inputs: [{ id: id + \"_in\", type: \"input\", label: \"Trigger\", relativeX: 0, relativeY: 60 }],\n      outputs: [{ id: id + \"_out\", type: \"output\", label: \"Next\", relativeX: 320, relativeY: 60 }],\n      configuration: { selector: \"\" }\n    },\n    action_type: {\n      label: \"Type Text\",\n      inputs: [{ id: id + \"_in\", type: \"input\", label: \"Trigger\", relativeX: 0, relativeY: 60 }],\n      outputs: [{ id: id + \"_out\", type: \"output\", label: \"Next\", relativeX: 320, relativeY: 60 }],\n      configuration: { selector: \"\", text: \"\" }\n    },\n    action_navigate: {\n      label: \"Navigate To URL\",\n      inputs: [],\n      outputs: [{ id: id + \"_out\", type: \"output\", label: \"Next\", relativeX: 320, relativeY: 60 }],\n      configuration: { url: \"\" }\n    },\n    action_scroll: {\n      label: \"Scroll Page\",\n      inputs: [{ id: id + \"_in\", type: \"input\", label: \"Trigger\", relativeX: 0, relativeY: 60 }],\n      outputs: [{ id: id + \"_out\", type: \"output\", label: \"Next\", relativeX: 320, relativeY: 60 }],\n      configuration: { direction: \"down\", amount: 300 }\n    },\n    action_wait: {\n      label: \"Wait\",\n      inputs: [{ id: id + \"_in\", type: \"input\", label: \"Trigger\", relativeX: 0, relativeY: 60 }],\n      outputs: [{ id: id + \"_out\", type: \"output\", label: \"Next\", relativeX: 320, relativeY: 60 }],\n      configuration: { duration: 1e3 }\n    },\n    action_screenshot: {\n      label: \"Take Screenshot\",\n      inputs: [{ id: id + \"_in\", type: \"input\", label: \"Trigger\", relativeX: 0, relativeY: 60 }],\n      outputs: [{ id: id + \"_out\", type: \"output\", label: \"Done\", relativeX: 320, relativeY: 60 }],\n      configuration: { filename: \"screenshot\" }\n    },\n    assert_text: {\n      label: \"Assert Text\",\n      inputs: [{ id: id + \"_in\", type: \"input\", label: \"Trigger\", relativeX: 0, relativeY: 60 }],\n      outputs: [],\n      configuration: { selector: \"\", expected: \"\" }\n    },\n    logic_condition: {\n      label: \"Condition (If)\",\n      inputs: [{ id: id + \"_in\", type: \"input\", label: \"Trigger\", relativeX: 0, relativeY: 60 }],\n      outputs: [\n        { id: id + \"_true\", type: \"output\", label: \"True\", relativeX: 320, relativeY: 60 },\n        { id: id + \"_false\", type: \"output\", label: \"False\", relativeX: 320, relativeY: 100 }\n      ],\n      configuration: { condition: \"\" }\n    },\n    logic_loop: {\n      label: \"Loop\",\n      inputs: [{ id: id + \"_in\", type: \"input\", label: \"Trigger\", relativeX: 0, relativeY: 60 }],\n      outputs: [\n        { id: id + \"_body\", type: \"output\", label: \"Body\", relativeX: 320, relativeY: 60 },\n        { id: id + \"_done\", type: \"output\", label: \"Done\", relativeX: 320, relativeY: 100 }\n      ],\n      configuration: { times: 3 }\n    }\n  };\n  const template = nodeTemplates[nodeType] || nodeTemplates[\"action_click\"];\n  const newNode = {\n    id,\n    type: nodeType,\n    label: template.label,\n    x: x || 200,\n    y: y || 200,\n    inputs: template.inputs,\n    outputs: template.outputs,\n    configuration: template.configuration\n  };\n  root.update({ nodes: [...root.nodes || [], newNode] });\n}",
+    "deleteSelection": "function deleteSelection2() {\n  const rootState = this.call(\"getRootState\");\n  const sel = rootState.activeSelection;\n  if (!sel) return;\n  if (sel.type === \"node\") {\n    const nodeId = sel.id;\n    const newNodes = (rootState.nodes || []).filter((n) => n.id !== nodeId);\n    const newConns = (rootState.connections || []).filter(\n      (c) => c.sourceNodeId !== nodeId && c.targetNodeId !== nodeId\n    );\n    rootState.update({\n      nodes: newNodes,\n      connections: newConns,\n      activeSelection: null\n    });\n  } else if (sel.type === \"wire\") {\n    const wireId = sel.id;\n    const newConns = (rootState.connections || []).filter((c) => c.id !== wireId);\n    rootState.update({\n      connections: newConns,\n      activeSelection: null\n    });\n  }\n}",
+    "getBezierPath": "function getBezierPath2(x1, y1, x2, y2) {\n  const dx = Math.abs(x2 - x1);\n  const controlOffset = Math.max(dx * 0.5, 80);\n  const cx1 = x1 + controlOffset;\n  const cy1 = y1;\n  const cx2 = x2 - controlOffset;\n  const cy2 = y2;\n  return `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`;\n}",
+    "getRootState": "function() {\n  let current = this;\n  while (current) {\n    if (current.state && current.state.nodes !== void 0) {\n      return current.state;\n    }\n    current = current.parent;\n  }\n  return this.state || {};\n}",
+    "getSocketCoords": "function getSocketCoords2(rootState, nodeId, socketId) {\n  if (!rootState) return null;\n  const rawState = typeof rootState.parse === \"function\" ? rootState.parse() : rootState;\n  const nodes = rawState.nodes || [];\n  const node = nodes.find((n) => n.id === nodeId);\n  if (!node) return null;\n  const inputs = Array.from(node.inputs || []);\n  const outputs = Array.from(node.outputs || []);\n  const allSockets = inputs.concat(outputs);\n  const socket = allSockets.find((sk) => sk.id === socketId);\n  if (!socket) return null;\n  return {\n    x: node.x + socket.relativeX,\n    y: node.y + socket.relativeY\n  };\n}",
+    "getWireCoords": "function getWireCoords2(rootState, sourceNodeId, sourceSocketId, targetNodeId, targetSocketId) {\n  const src = this.call(\"getSocketCoords\", rootState, sourceNodeId, sourceSocketId);\n  const tgt = this.call(\"getSocketCoords\", rootState, targetNodeId, targetSocketId);\n  if (!src || !tgt) return null;\n  return { x1: src.x, y1: src.y, x2: tgt.x, y2: tgt.y };\n}",
+    "loadWorkspace": "function loadWorkspace2(file) {\n  if (!file) return;\n  const reader = new FileReader();\n  const self = this;\n  reader.onload = function(e) {\n    let data;\n    try {\n      data = JSON.parse(e.target.result);\n    } catch (err) {\n      self.call(\"showToast\", \"Invalid workflow file format\", \"error\");\n      return;\n    }\n    const isValid = self.call(\"validateGraph\", data);\n    if (!isValid) {\n      self.call(\"showToast\", \"Invalid workflow file format\", \"error\");\n      return;\n    }\n    const s = self.state;\n    const root = s.root || s;\n    root.update({\n      nodes: data.nodes,\n      connections: data.connections,\n      transform: data.transform,\n      activeSelection: null,\n      isDraggingNode: false,\n      draggingNodeId: null,\n      isDraggingWire: false,\n      draftWire: null\n    });\n    self.call(\"showToast\", \"Workspace loaded successfully\", \"success\");\n  };\n  reader.onerror = function() {\n    self.call(\"showToast\", \"Failed to read file\", \"error\");\n  };\n  reader.readAsText(file);\n}",
+    "nodeTypeColor": "function(type) {\n  if (!type) return \"#0474f2\";\n  if (type.startsWith(\"assert\")) return \"#4db852\";\n  if (type.startsWith(\"logic\")) return \"#e97c16\";\n  return \"#0474f2\";\n}",
+    "nodeTypeIcon": "function(type) {\n  const map = {\n    action_click: \"click\",\n    action_type: \"type\",\n    action_navigate: \"navigate\",\n    action_scroll: \"scroll\",\n    action_wait: \"wait\",\n    action_screenshot: \"screenshot\",\n    assert_text: \"assert\",\n    logic_condition: \"condition\",\n    logic_loop: \"loop\"\n  };\n  return map[type] || \"node\";\n}",
+    "saveWorkspace": "function saveWorkspace2() {\n  const rootState = this.call(\"getRootState\");\n  const graphState = {\n    nodes: rootState.nodes || [],\n    connections: rootState.connections || [],\n    transform: rootState.transform || { x: 0, y: 0, scale: 1 }\n  };\n  const json = JSON.stringify(graphState, null, 2);\n  const blob = new Blob([json], { type: \"application/json\" });\n  const url = URL.createObjectURL(blob);\n  const link = document.createElement(\"a\");\n  link.href = url;\n  link.download = \"workflow.json\";\n  document.body.appendChild(link);\n  link.click();\n  document.body.removeChild(link);\n  URL.revokeObjectURL(url);\n  this.call(\"showToast\", \"Workspace saved as workflow.json\", \"success\");\n}",
+    "showToast": "function showToast2(message, type) {\n  const s = this.state;\n  const root = s.root || s;\n  root.update({\n    toastVisible: true,\n    toastMessage: message || \"Notification\",\n    toastType: type || \"error\"\n  });\n  setTimeout(() => {\n    const s2 = this.state;\n    const root2 = s2.root || s2;\n    root2.update({ toastVisible: false, toastMessage: \"\" });\n  }, 3e3);\n}",
+    "validateGraph": "function validateGraph2(data) {\n  if (!data || typeof data !== \"object\") return false;\n  if (!Array.isArray(data.nodes)) return false;\n  if (!Array.isArray(data.connections)) return false;\n  if (!data.transform || typeof data.transform !== \"object\") return false;\n  const { x, y, scale } = data.transform;\n  if (typeof x !== \"number\" || typeof y !== \"number\" || typeof scale !== \"number\") return false;\n  for (const node of data.nodes) {\n    if (!node.id || !node.type || typeof node.x !== \"number\" || typeof node.y !== \"number\") return false;\n    if (!Array.isArray(node.inputs) || !Array.isArray(node.outputs)) return false;\n  }\n  for (const conn of data.connections) {\n    if (!conn.id || !conn.sourceNodeId || !conn.sourceSocketId) return false;\n    if (!conn.targetNodeId || !conn.targetSocketId) return false;\n  }\n  return true;\n}"
+  },
+  "methods": {},
+  "designSystem": {
+    "color": {
+      "green": "#389d34",
+      "red": "#e15c55",
+      "yellow": "#EDCB38",
+      "orange": "#e97c16",
+      "transparent": "rgba(0, 0, 0, 0)",
+      "black": "black",
+      "gray": "#4e4e50",
+      "white": "#ffffff",
+      "title": "white",
+      "caption": "gray",
+      "paragraph": "gray",
+      "disabled": "#4e4e50",
+      "line": "#2a2a4a",
+      "codGray": "#171717",
+      "solitude": "#e5f1ff",
+      "anakiwa": "#a3cdfd",
+      "concrete": "#f2f2f2",
+      "blue": "#0474f2",
+      "phosphorus": "#4db852",
+      "canvasBg": "#0d0d12",
+      "nodeBg": "#1a1a2e",
+      "nodeBorder": "#2a2a4a",
+      "nodeHeaderBg": "#16213e",
+      "socketInput": "#4db852",
+      "socketOutput": "#0474f2",
+      "wireGlow": "#0474f2",
+      "wireActive": "#a3cdfd",
+      "wireDefault": "#3a4060",
+      "sidebarBg": "#13131f",
+      "toolbarBg": "#0d0d18",
+      "selectionRing": "#0474f2",
+      "deleteRed": "#e15c55"
+    },
+    "gradient": {},
+    "theme": {
+      "document": {
+        "@dark": {
+          "background": "codGray",
+          "color": "title"
+        },
+        "@light": {
+          "background": "gray 1 +168",
+          "color": "title"
+        }
+      },
+      "dialog": {
+        "@dark": {
+          "background": "gray 0.95 -68",
+          "color": "title",
+          "backdropFilter": "blur(3px)",
+          "borderColor": "gray 0",
+          "outlineColor": "blue"
+        },
+        "@light": {
+          "background": "gray .95 +150",
+          "color": "title",
+          "backdropFilter": "blur(3px)",
+          "borderColor": "gray 0",
+          "outlineColor": "blue"
+        }
+      },
+      "dialog-elevated": {
+        "@dark": {
+          "color": "title",
+          "background": "gray 1 +68",
+          "borderColor": "gray 0",
+          "outlineColor": "blue"
+        },
+        "@light": {
+          "color": "title",
+          "background": "gray 0.95 +140",
+          "borderColor": "gray 0",
+          "outlineColor": "blue"
+        }
+      },
+      "field": {
+        "@dark": {
+          "color": "white",
+          "background": "gray 0.95 -65",
+          "::placeholder": {
+            "color": "white 1 -78"
+          }
+        },
+        "@light": {
+          "color": "black",
+          "::placeholder": {
+            "color": "gray 1 -68"
+          }
+        }
+      },
+      "primary": {
+        "@dark": {
+          "background": "blue",
+          "color": "white"
+        },
+        "@light": {
+          "color": "white",
+          "background": "blue"
+        }
+      },
+      "warning": {
+        "@dark": {
+          "background": "red",
+          "color": "white"
+        },
+        "@light": {
+          "color": "white",
+          "background": "red"
+        }
+      },
+      "success": {
+        "@dark": {
+          "background": "green",
+          "color": "white"
+        },
+        "@light": {
+          "background": "green",
+          "color": "white"
+        }
+      },
+      "none": {
+        "color": "none",
+        "background": "none"
+      },
+      "transparent": {
+        "color": "currentColor",
+        "background": "transparent"
+      },
+      "bordered": {
+        "background": "transparent",
+        "@dark": {
+          "border": "1px solid #4e4e50"
+        },
+        "@light": {
+          "border": "1px solid #a3cdfd"
+        }
+      },
+      "canvas": {
+        "background": "canvasBg",
+        "color": "title"
+      },
+      "toolbar": {
+        "background": "toolbarBg",
+        "color": "title",
+        "borderBottom": "1px solid #1e1e32"
+      },
+      "sidebar": {
+        "background": "sidebarBg",
+        "color": "title",
+        "borderRight": "1px solid #1e1e32"
+      },
+      "node": {
+        "background": "nodeBg",
+        "color": "title",
+        "border": "1px solid #2a2a4a"
+      },
+      "nodeHeader": {
+        "background": "nodeHeaderBg",
+        "color": "title"
+      },
+      "nodeSelected": {
+        "background": "nodeBg",
+        "color": "title",
+        "border": "1px solid #0474f2",
+        "boxShadow": "0 0 0 2px #0474f220"
+      },
+      "paletteItem": {
+        "background": "gray 0.9 -80",
+        "color": "title",
+        "border": "1px solid #252540",
+        ":hover": {
+          "background": "gray 0.9 -65",
+          "borderColor": "blue"
+        }
+      },
+      "toast": {
+        "background": "#e15c55",
+        "color": "white"
+      },
+      "toast-success": {
+        "background": "#389d34",
+        "color": "white"
+      }
+    },
+    "font": {},
+    "font_family": {
+      "Default": {
+        "isDefault": true,
+        "value": [
+          "Inter, San Francisco, Helvetica Neue, Helvetica, Arial"
+        ],
+        "type": "sans-serif"
+      },
+      "Mono": {
+        "value": [
+          "JetBrains Mono, Fira Code, Menlo, Monaco, Courier New"
+        ],
+        "type": "monospace"
+      }
+    },
+    "typography": {
+      "base": 16,
+      "ratio": 1.25,
+      "subSequence": true
+    },
+    "spacing": {
+      "base": 16,
+      "ratio": 1.618,
+      "subSequence": true
+    },
+    "timing": {
+      "defaultBezier": "cubic-bezier(.29, .67, .51, .97)"
+    },
+    "class": {},
+    "grid": {},
+    "icons": {
+      "save": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"17 21 17 13 7 13 7 21\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"7 3 7 8 15 8\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "upload": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"17 8 12 3 7 8\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><line x1=\"12\" y1=\"3\" x2=\"12\" y2=\"15\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "trash": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><polyline points=\"3 6 5 6 21 6\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "zoomIn": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"11\" cy=\"11\" r=\"8\" stroke=\"currentColor\" stroke-width=\"2\"/><line x1=\"21\" y1=\"21\" x2=\"16.65\" y2=\"16.65\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/><line x1=\"11\" y1=\"8\" x2=\"11\" y2=\"14\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/><line x1=\"8\" y1=\"11\" x2=\"14\" y2=\"11\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+      "zoomOut": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"11\" cy=\"11\" r=\"8\" stroke=\"currentColor\" stroke-width=\"2\"/><line x1=\"21\" y1=\"21\" x2=\"16.65\" y2=\"16.65\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/><line x1=\"8\" y1=\"11\" x2=\"14\" y2=\"11\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+      "fitView": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "close": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+      "chevronRight": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><polyline points=\"9 18 15 12 9 6\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "chevronDown": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><polyline points=\"6 9 12 15 18 9\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "click": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M9 2v10l3-2 3 4 2-1.5-3-4 3-1L9 2z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"18\" cy=\"18\" r=\"3\" stroke=\"currentColor\" stroke-width=\"2\"/></svg>",
+      "type": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><polyline points=\"4 7 4 4 20 4 20 7\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><line x1=\"9\" y1=\"20\" x2=\"15\" y2=\"20\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/><line x1=\"12\" y1=\"4\" x2=\"12\" y2=\"20\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+      "assert": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M9 11l3 3L22 4\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "navigate": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"3 11 22 2 13 21 11 13 3 11\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "wait": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"12\" cy=\"12\" r=\"10\" stroke=\"currentColor\" stroke-width=\"2\"/><polyline points=\"12 6 12 12 16 14\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "screenshot": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2v11z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"12\" cy=\"13\" r=\"4\" stroke=\"currentColor\" stroke-width=\"2\"/></svg>",
+      "scroll": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/><polyline points=\"19 12 12 19 5 12\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "condition": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M22 12H12m0 0l4-4m-4 4l4 4M2 12l4-4m-4 4l4 4M2 12h6\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "loop": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><polyline points=\"17 1 21 5 17 9\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M3 11V9a4 4 0 014-4h14\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"7 23 3 19 7 15\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M21 13v2a4 4 0 01-4 4H3\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "play": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"5 3 19 12 5 21 5 3\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "node": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"18\" cy=\"5\" r=\"3\" stroke=\"currentColor\" stroke-width=\"2\"/><circle cx=\"6\" cy=\"12\" r=\"3\" stroke=\"currentColor\" stroke-width=\"2\"/><circle cx=\"18\" cy=\"19\" r=\"3\" stroke=\"currentColor\" stroke-width=\"2\"/><line x1=\"8.59\" y1=\"13.51\" x2=\"15.42\" y2=\"17.49\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/><line x1=\"15.41\" y1=\"6.51\" x2=\"8.59\" y2=\"10.49\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+      "warning": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><line x1=\"12\" y1=\"9\" x2=\"12\" y2=\"13\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/><line x1=\"12\" y1=\"17\" x2=\"12.01\" y2=\"17\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+      "info": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"12\" cy=\"12\" r=\"10\" stroke=\"currentColor\" stroke-width=\"2\"/><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/><line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+      "grid": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+      "drag": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"9\" cy=\"5\" r=\"1\" fill=\"currentColor\"/><circle cx=\"9\" cy=\"12\" r=\"1\" fill=\"currentColor\"/><circle cx=\"9\" cy=\"19\" r=\"1\" fill=\"currentColor\"/><circle cx=\"15\" cy=\"5\" r=\"1\" fill=\"currentColor\"/><circle cx=\"15\" cy=\"12\" r=\"1\" fill=\"currentColor\"/><circle cx=\"15\" cy=\"19\" r=\"1\" fill=\"currentColor\"/></svg>"
+    },
+    "shape": {},
+    "reset": {},
+    "animation": {
+      "fadeInUp": {
+        "from": {
+          "transform": "translate3d(0, 12.5%, 1px)",
+          "opacity": 0
+        },
+        "to": {
+          "transform": "translate3d(0, 0, 1px)",
+          "opacity": 1
+        }
+      },
+      "fadeOutDown": {
+        "from": {
+          "transform": "translate3d(0, 0, 1px)",
+          "opacity": 1
+        },
+        "to": {
+          "transform": "translate3d(0, 12.5%, 1px)",
+          "opacity": 0
+        }
+      },
+      "marquee": {
+        "from": {
+          "transform": "translate3d(0, 0, 1px)"
+        },
+        "to": {
+          "transform": "translate3d(-50%, 0, 1px)"
+        }
+      }
+    },
+    "media": {}
+  },
+  "files": {},
+  "sharedLibraries": [],
+  "envs": {},
+  "app": {
+    "extend": "Page",
+    "rootNode": "EditorPage"
+  },
+  "schema": {
+    "dependencies": {
+      "smbls": {
+        "key": "smbls",
+        "resolvedVersion": "3.8.9",
+        "type": "dependency",
+        "version": "3.8.9",
+        "status": "done"
+      }
+    }
+  }
+}
