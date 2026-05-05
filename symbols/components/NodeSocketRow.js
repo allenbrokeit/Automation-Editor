@@ -19,7 +19,7 @@ export const SocketDot = {
     flexShrink: '0',
     cursor: 'crosshair',
     position: 'relative',
-    background: 'rgba(0,0,0,0.01)',
+    background: 'canvasBg',
 
     SocketVisual: {
       width: 'Z2',
@@ -32,7 +32,7 @@ export const SocketDot = {
       boxSizing: 'border-box',
 
       isConnected: (el, s) => {
-        const rootState = el.call('getRootState')
+        const rootState = s.root || s
         if (!rootState) return false
         return (rootState.connections || []).some(
           c => c.sourceSocketId === s.id || c.targetSocketId === s.id
@@ -52,7 +52,7 @@ export const SocketDot = {
       e.preventDefault()
       if (s.type !== 'output') return
 
-      const rootState = el.call('getRootState')
+      const rootState = s.root || s
       const nodeSocket = el.call('getSocketCoords', rootState, s.nodeId, s.id)
       if (!nodeSocket) return
 
@@ -73,7 +73,7 @@ export const SocketDot = {
       if (s.type !== 'input') return
       e.stopPropagation()
 
-      const rootState = el.call('getRootState')
+      const rootState = s.root || s
       if (!rootState.isDraggingWire || !rootState.draftWire) return
 
       const draft = rootState.draftWire
@@ -84,10 +84,11 @@ export const SocketDot = {
 
       const conns = rootState.connections || []
       
-      // Find and remove existing connection to same target
-      const existingIdx = conns.findIndex(c => c.targetNodeId === s.nodeId && c.targetSocketId === s.id)
+      // Build a new array immutably — DOMQL ignores in-place push/splice
+      let updatedConns = [...conns]
+      const existingIdx = updatedConns.findIndex(c => c.targetNodeId === s.nodeId && c.targetSocketId === s.id)
       if (existingIdx !== -1) {
-        conns.splice(existingIdx, 1)
+        updatedConns.splice(existingIdx, 1)
       }
       
       const connId = 'conn_' + Date.now() + '_' + Math.random().toString(36).slice(2, 5)
@@ -98,14 +99,13 @@ export const SocketDot = {
         targetNodeId: s.nodeId,
         targetSocketId: s.id,
       }
+      updatedConns.push(newConn)
 
-      // Mutate proxy directly
-      conns.push(newConn)
-
+      // Immutable replacement so DOMQL's differ mounts the new WirePath child
       rootState.update({
+        connections: updatedConns,
         isDraggingWire: false,
         draftWire: null,
-        forceRender: Date.now(),
       })
 
       el.call('showToast', 'Wire Connected successfully!', 'success')

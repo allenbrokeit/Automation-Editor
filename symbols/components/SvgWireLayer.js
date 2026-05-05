@@ -19,38 +19,24 @@ export const SvgWireLayer = {
 
   WireGroup: {
     tag: 'g',
-    attr: {
-      'data-connections': (el, s) => {
-        const root = s.root || s
-        return (root.connections || []).length
-      },
-      'data-force-render': (el, s) => {
-        const root = s.root || s
-        return root.forceRender
-      }
+    namespace: 'http://www.w3.org/2000/svg',
+
+    if: (el, s) => {
+      const root = s.root || s
+      return (root.connections || []).length > 0
     },
+
     children: (el, s) => {
       const root = s.root || s
-      const connections = root.connections || []
-      const obj = {}
-      
-      connections.forEach(c => {
-        // Generate a valid PascalCase component key
-        const safeKey = 'Wire' + c.id.replace(/[^a-zA-Z0-9]/g, '')
-        
-        // Explicitly construct the child as a first-class named component
-        obj[safeKey] = {
-          extends: 'WirePath',
-          state: c // Manually bind the specific connection state
-        }
-      })
-      
-      return obj
+      return root.connections || []
     },
+    childExtends: 'WirePath',
+    childrenAs: 'state',
   },
 
   DraftWireGroup: {
     tag: 'g',
+    namespace: 'http://www.w3.org/2000/svg',
     if: (el, s) => {
       const root = s.root || s
       return root.isDraggingWire && root.draftWire
@@ -58,6 +44,7 @@ export const SvgWireLayer = {
 
     DraftWirePath: {
       tag: 'path',
+      namespace: 'http://www.w3.org/2000/svg',
       pointerEvents: 'none',
       attr: {
         d: (el, s) => {

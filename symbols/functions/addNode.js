@@ -1,5 +1,6 @@
 export const addNode = function addNode (nodeType, x, y) {
-  const root = this.call('getRootState')
+  const root = this.state.root || this.state
+  console.log('ADD NODE CALLED', nodeType, x, y, root.nodes?.length)
 
   const id = 'node_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7)
 
@@ -47,7 +48,7 @@ export const addNode = function addNode (nodeType, x, y) {
       configuration: { selector: '', expected: '' }
     },
     logic_condition: {
-      label: 'Condition (If)',
+      label: 'If/Else Condition',
       inputs: [{ id: id + '_in', type: 'input', label: 'Trigger', relativeX: 0, relativeY: 60 }],
       outputs: [
         { id: id + '_true', type: 'output', label: 'True', relativeX: 320, relativeY: 60 },
@@ -78,5 +79,8 @@ export const addNode = function addNode (nodeType, x, y) {
     configuration: template.configuration
   }
 
-  root.update({ nodes: [...(root.nodes || []), newNode] })
+  root.update({ 
+    nodes: [...(root.nodes || []), newNode],
+    forceRender: Date.now() 
+  })
 }

@@ -14,9 +14,7 @@ export const saveWorkspace = function saveWorkspace () {
   const link = document.createElement('a')
   link.href = url
   link.download = 'workflow.json'
-  document.body.appendChild(link)
   link.click()
-  document.body.removeChild(link)
   URL.revokeObjectURL(url)
 
   this.call('showToast', 'Workspace saved as workflow.json', 'success')

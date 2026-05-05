@@ -22,12 +22,11 @@ export const NodePaletteItem = {
     flexShrink: '0',
     background: (el, s) => (s.color || '#0474f2') + '22',
 
-    PaletteNodeIcon: {
-      extends: 'Icon',
+    Icon: {
       icon: (el, s) => s.icon || 'node',
       width: 'Z2',
       height: 'Z2',
-      color: (el, s) => s.color || 'blue',
+      color: (el, s) => s.color || 'blue'
     },
   },
 
@@ -39,14 +38,13 @@ export const NodePaletteItem = {
     flex: '1',
   },
 
-  PaletteDragHint: {
-    extends: 'Icon',
+  Icon: {
     icon: 'drag',
     width: 'Z1',
     height: 'Z1',
     color: 'disabled',
     opacity: '0',
-    transition: 'opacity 0.15s ease',
+    transition: 'opacity 0.15s ease'
   },
 
   ':hover': {
@@ -63,6 +61,10 @@ export const NodePaletteItem = {
       e.preventDefault()
       el.call('addNode', s.type || 'action_click', 200, 200)
     }
+  },
+
+  onClick: (e, el, s) => {
+    el.call('addNode', s.type || 'action_click', 200, 200)
   },
 }
 
@@ -92,7 +94,8 @@ export const NodeSidebar = {
 
     SidebarCount: {
       text: (el, s) => {
-        const root = s.root || s
+        const root = el.call('getRootState')
+        const _tickle = root.nodes
         return (root.nodes || []).length + ' on canvas'
       },
       fontSize: 'Y',
@@ -110,45 +113,47 @@ export const NodeSidebar = {
       fontSize: 'Y',
       fontWeight: '700',
       color: 'disabled',
-      letterSpacing: '0.8px',
+      letterSpacing: 'V',
       padding: 'Y 0 X',
     },
 
-    NavNode: { extends: 'NodePaletteItem', state: { type: 'action_navigate', label: 'Navigate', icon: 'navigate', color: '#0474f2', group: 'Actions' } },
-    ClickNode: { extends: 'NodePaletteItem', state: { type: 'action_click', label: 'Click', icon: 'click', color: '#0474f2', group: 'Actions' } },
-    TypeNode: { extends: 'NodePaletteItem', state: { type: 'action_type', label: 'Type Text', icon: 'type', color: '#0474f2', group: 'Actions' } },
-    ScrollNode: { extends: 'NodePaletteItem', state: { type: 'action_scroll', label: 'Scroll', icon: 'scroll', color: '#0474f2', group: 'Actions' } },
-    WaitNode: { extends: 'NodePaletteItem', state: { type: 'action_wait', label: 'Wait', icon: 'wait', color: '#e97c16', group: 'Actions' } },
-    ScreenshotNode: { extends: 'NodePaletteItem', state: { type: 'action_screenshot', label: 'Screenshot', icon: 'screenshot', color: '#4db852', group: 'Actions' } },
+    NodePaletteItem: {
+      state: { type: 'action_navigate', label: 'Navigate', icon: 'navigate', color: 'blue', group: 'Actions' }
+    },
+    NodePaletteItem_1: { extends: 'NodePaletteItem', state: { type: 'action_click', label: 'Click', icon: 'click', color: 'blue', group: 'Actions' } },
+    NodePaletteItem_2: { extends: 'NodePaletteItem', state: { type: 'action_type', label: 'Type Text', icon: 'type', color: 'blue', group: 'Actions' } },
+    NodePaletteItem_3: { extends: 'NodePaletteItem', state: { type: 'action_scroll', label: 'Scroll', icon: 'scroll', color: 'blue', group: 'Actions' } },
+    NodePaletteItem_4: { extends: 'NodePaletteItem', state: { type: 'action_wait', label: 'Wait', icon: 'wait', color: 'orange', group: 'Actions' } },
+    NodePaletteItem_5: { extends: 'NodePaletteItem', state: { type: 'action_screenshot', label: 'Screenshot', icon: 'screenshot', color: 'phosphorus', group: 'Actions' } },
 
     AssertionsLabel: {
       text: 'ASSERTIONS',
       fontSize: 'Y',
       fontWeight: '700',
       color: 'disabled',
-      letterSpacing: '0.8px',
+      letterSpacing: 'V',
       padding: 'A 0 X',
       borderTop: '1px solid',
       borderColor: 'line',
       marginTop: 'X',
     },
 
-    AssertTextNode: { extends: 'NodePaletteItem', state: { type: 'assert_text', label: 'Assert Text', icon: 'assert', color: '#4db852', group: 'Assertions' } },
+    NodePaletteItem_6: { extends: 'NodePaletteItem', state: { type: 'assert_text', label: 'Assert Text', icon: 'assert', color: 'phosphorus', group: 'Assertions' } },
 
     LogicLabel: {
       text: 'LOGIC',
       fontSize: 'Y',
       fontWeight: '700',
       color: 'disabled',
-      letterSpacing: '0.8px',
+      letterSpacing: 'V',
       padding: 'A 0 X',
       borderTop: '1px solid',
       borderColor: 'line',
       marginTop: 'X',
     },
 
-    ConditionNode: { extends: 'NodePaletteItem', state: { type: 'logic_condition', label: 'Condition', icon: 'condition', color: '#e97c16', group: 'Logic' } },
-    LoopNode: { extends: 'NodePaletteItem', state: { type: 'logic_loop', label: 'Loop', icon: 'loop', color: '#e97c16', group: 'Logic' } },
+    NodePaletteItem_7: { extends: 'NodePaletteItem', state: { type: 'logic_condition', label: 'Condition', icon: 'condition', color: 'orange', group: 'Logic' } },
+    NodePaletteItem_8: { extends: 'NodePaletteItem', state: { type: 'logic_loop', label: 'Loop', icon: 'loop', color: 'orange', group: 'Logic' } },
   },
 
   SidebarFooter: {
@@ -158,7 +163,7 @@ export const NodeSidebar = {
     marginTop: 'auto',
 
     FooterTip: {
-      text: 'Drag nodes onto the canvas to build your workflow',
+      text: '{{ dragNodesOntoTheCanvasToBuildYourWorkflo | polyglot }}',
       fontSize: 'Y',
       color: 'disabled',
       lineHeight: '1.5',

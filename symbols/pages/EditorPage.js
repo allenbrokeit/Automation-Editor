@@ -9,29 +9,22 @@ export const EditorPage = {
   theme: 'document',
   position: 'relative',
 
-  // Keyboard and global state is securely managed here at the root level so closures never unmount
-  onRender: (el) => {
-    if (el.__keyboardBound) return
-    el.__keyboardBound = true
+  onKeydown: (e, el, s) => {
+    const rootState = el.call('getRootState')
+    if (e.key === ' ' && e.target === document.body) {
+      e.preventDefault()
+      rootState.update({ isSpacePressed: true })
+    }
+    if ((e.key === 'Delete' || e.key === 'Backspace') && e.target === document.body) {
+      el.call('deleteSelection')
+    }
+  },
 
-    window.addEventListener('keydown', (e) => {
+  onKeyup: (e, el, s) => {
+    if (e.key === ' ') {
       const rootState = el.call('getRootState')
-      if (e.key === ' ' && e.target === document.body) {
-        e.preventDefault()
-        rootState.update({ isSpacePressed: true })
-      }
-      if ((e.key === 'Delete' || e.key === 'Backspace') && e.target === document.body) {
-        el.call('deleteSelection')
-      }
-    })
-
-    window.addEventListener('keyup', (e) => {
-      if (e.key === ' ') {
-        const rootState = el.call('getRootState')
-        // Automatically cancels pan mode broadly when lifting Space
-        rootState.update({ isSpacePressed: false, isPanning: false })
-      }
-    })
+      rootState.update({ isSpacePressed: false, isPanning: false })
+    }
   },
 
   TopToolbar: {},
@@ -66,7 +59,7 @@ export const EditorPage = {
       if (!file) return
       el.call('loadWorkspace', file)
       // Reset input so same file can be re-selected
-      el.node.value = ''
+      el.update({ value: '' })
     },
   },
 

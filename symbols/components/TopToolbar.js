@@ -15,12 +15,11 @@ export const TopToolbar = {
     align: 'center',
     gap: 'Z',
 
-    BrandIcon: {
-      extends: 'Icon',
+    Icon: {
       icon: 'node',
       width: 'A1',
       height: 'A1',
-      color: 'blue',
+      color: 'blue'
     },
 
     BrandText: {
@@ -36,7 +35,7 @@ export const TopToolbar = {
       },
 
       BrandSub: {
-        text: 'Visual Workflow Builder',
+        text: '{{ visualWorkflowBuilder | polyglot }}',
         fontSize: 'Y',
         color: 'caption',
         fontWeight: '400',
@@ -52,7 +51,7 @@ export const TopToolbar = {
     color: 'caption',
 
     HintText: {
-      text: 'Middle-click to pan  ·  Scroll to zoom  ·  Delete to remove',
+      text: '{{ middleclickToPanScrollToZoomDeleteToRemo | polyglot }}',
       fontSize: 'A',
       color: 'title',
     },
@@ -63,9 +62,8 @@ export const TopToolbar = {
     align: 'center',
     gap: 'Z',
 
-    SaveBtn: {
+    Button: {
       tag: 'button',
-      extends: 'Button',
       theme: 'primary',
       flow: 'x',
       align: 'center',
@@ -84,9 +82,9 @@ export const TopToolbar = {
         width: 'Z2',
         height: 'Z2',
       },
-      SaveLabel: { text: 'Save' },
 
-      onClick: (e, el, s) => el.call('saveWorkspace'),
+      SaveLabel: { text: 'Save' },
+      onClick: (e, el, s) => el.call('saveWorkspace')
     },
 
     LoadBtn: {
@@ -101,19 +99,20 @@ export const TopToolbar = {
       borderRadius: 'Y',
       border: '1px solid',
       theme: 'bordered',
-      color: 'black',
+      color: 'title',
       ariaLabel: 'Load workspace from JSON file',
 
-      LoadIcon: {
-        extends: 'Icon',
+      Icon: {
         icon: 'upload',
         width: 'Z2',
-        height: 'Z2',
+        height: 'Z2'
       },
       LoadLabel: { text: 'Load' },
 
       onClick: (e, el) => {
-        const fileInput = el.lookup('EditorPage').lookdown('HiddenFileInput')
+        let root = el
+        while(root && root.parent) root = root.parent;
+        const fileInput = root.lookdown ? root.lookdown('HiddenFileInput') : null;
         if (fileInput) fileInput.node.click()
       },
     },
@@ -140,11 +139,10 @@ export const TopToolbar = {
       color: 'caption',
       ariaLabel: 'Clear canvas',
 
-      ClearIcon: {
-        extends: 'Icon',
+      Icon: {
         icon: 'trash',
         width: 'Z2',
-        height: 'Z2',
+        height: 'Z2'
       },
       ClearLabel: { text: 'Clear' },
 
@@ -170,11 +168,10 @@ export const TopToolbar = {
       ariaLabel: 'Fit view to content',
       title: 'Fit view',
 
-      FitIcon: {
-        extends: 'Icon',
+      Icon: {
         icon: 'fitView',
         width: 'Z2',
-        height: 'Z2',
+        height: 'Z2'
       },
 
       onClick: (e, el, s) => {
