@@ -1,6 +1,5 @@
 {
-  "owner": "system",
-  "key": "AutomationEditor",
+  "key": "automation-editor-v3",
   "dir": "./symbols",
   "useKV": true,
   "bundler": "parcel"

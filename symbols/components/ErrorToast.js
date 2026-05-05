@@ -34,16 +34,16 @@ export const ErrorToast = {
     return root.toastType === 'success' ? 'toast-success' : 'toast'
   },
 
-  ToastIconWrap: {
-    extends: 'Icon',
+  Icon: {
     icon: (el, s) => {
       const root = s.root || s
       return root.toastType === 'success' ? 'assert' : 'warning'
     },
+
     width: 'A',
     height: 'A',
     color: 'white',
-    flexShrink: '0',
+    flexShrink: '0'
   },
 
   ToastMsg: {
@@ -57,7 +57,7 @@ export const ErrorToast = {
     flex: '1',
   },
 
-  ToastCloseBtn: {
+  Icon_1: {
     tag: 'button',
     extends: 'Icon',
     icon: 'close',

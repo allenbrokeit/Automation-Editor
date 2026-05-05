@@ -1,8 +1,6 @@
 export const WirePath = {
-  tag: 'svg',
-  width: '100%',
-  height: '100%',
-  overflow: 'visible',
+  tag: 'g',
+  namespace: 'http://www.w3.org/2000/svg',
   key: (el, s) => s.id,
 
   WirePathBg: {
@@ -10,13 +8,13 @@ export const WirePath = {
     namespace: 'http://www.w3.org/2000/svg',
     attr: {
       d: (el, s) => {
-        const rootState = el.call('getRootState')
+        const rootState = s.root || s
         const _tickle = rootState.forceRender // Establish reactivity dependency
         const coords = el.call('getWireCoords', rootState, s.sourceNodeId, s.sourceSocketId, s.targetNodeId, s.targetSocketId)
         if (!coords) return ''
         return el.call('getBezierPath', coords.x1, coords.y1, coords.x2, coords.y2)
       },
-      stroke: 'rgba(0,0,0,0.3)',
+      stroke: 'canvasBg',
       'stroke-width': '6',
       fill: 'none',
       'stroke-linecap': 'round',
@@ -28,7 +26,7 @@ export const WirePath = {
     namespace: 'http://www.w3.org/2000/svg',
     cursor: 'pointer',
     filter: (el, s) => {
-      const rootState = el.call('getRootState')
+      const rootState = s.root || s
       const isSelected = rootState.activeSelection &&
         rootState.activeSelection.type === 'wire' &&
         rootState.activeSelection.id === s.id
@@ -36,21 +34,21 @@ export const WirePath = {
     },
     attr: {
       d: (el, s) => {
-        const rootState = el.call('getRootState')
+        const rootState = s.root || s
         const _tickle = rootState.forceRender // Establish reactivity dependency
         const coords = el.call('getWireCoords', rootState, s.sourceNodeId, s.sourceSocketId, s.targetNodeId, s.targetSocketId)
         if (!coords) return ''
         return el.call('getBezierPath', coords.x1, coords.y1, coords.x2, coords.y2)
       },
       stroke: (el, s) => {
-        const rootState = el.call('getRootState')
+        const rootState = s.root || s
         const isSelected = rootState.activeSelection &&
           rootState.activeSelection.type === 'wire' &&
           rootState.activeSelection.id === s.id
         return isSelected ? '#a3cdfd' : '#0474f2'
       },
       'stroke-width': (el, s) => {
-        const rootState = el.call('getRootState')
+        const rootState = s.root || s
         const isSelected = rootState.activeSelection &&
           rootState.activeSelection.type === 'wire' &&
           rootState.activeSelection.id === s.id
@@ -62,7 +60,7 @@ export const WirePath = {
     },
     onClick: (e, el, s) => {
       e.stopPropagation()
-      const rootState = el.call('getRootState')
+      const rootState = s.root || s
       rootState.update({ activeSelection: { type: 'wire', id: s.id } })
     },
   },

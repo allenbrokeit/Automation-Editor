@@ -13,7 +13,7 @@ export const AutomationNode = {
   top: (el, s) => `${s.y || 0}px`,
 
   isSelected: (el, s) => {
-    const root = el.call('getRootState')
+    const root = s.root || s
     return root.activeSelection && root.activeSelection.id === s.id
   },
   '.isSelected': {
@@ -141,7 +141,7 @@ export const AutomationNode = {
     if (e.button !== 0) return
     e.stopPropagation()
 
-    const root = el.call('getRootState')
+    const root = s.root || s
     if (root.isDraggingWire) return
 
     const transform = root.transform || { x: 0, y: 0, scale: 1 }
@@ -158,7 +158,7 @@ export const AutomationNode = {
 
   onClick: (e, el, s) => {
     e.stopPropagation()
-    const root = el.call('getRootState')
+    const root = s.root || s
     root.update({ activeSelection: { type: 'node', id: s.id } })
   },
 }

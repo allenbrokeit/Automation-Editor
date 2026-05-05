@@ -41,6 +41,12 @@ export const CanvasViewport = {
   theme: 'canvas',
   cursor: 'default',
 
+  onRender: (el, s) => {
+    el.node.addEventListener('drop', (e) => {
+      console.log('NATIVE DROP TRIGGERED', e.dataTransfer?.getData('nodeType'))
+    })
+  },
+
   backgroundImage: (el, s) => {
     const root = s.root || s
     const t = root.transform || { x: 0, y: 0, scale: 1 }
@@ -89,7 +95,7 @@ export const CanvasViewport = {
 
   onWheel: (e, el, s) => {
     e.preventDefault()
-    const rootState = el.call('getRootState')
+    const rootState = s.root || s
     const t = rootState.transform || { x: 0, y: 0, scale: 1 }
 
     const direction = e.deltaY > 0 ? -1 : 1
@@ -108,7 +114,7 @@ export const CanvasViewport = {
   },
 
   onMousedown: (e, el, s) => {
-    const rootState = el.call('getRootState')
+    const rootState = s.root || s
     const isSpacePressed = rootState.isSpacePressed
 
     if (e.button === 1 || (e.button === 0 && isSpacePressed)) {
@@ -124,7 +130,7 @@ export const CanvasViewport = {
   },
 
   onMousemove: (e, el, s) => {
-    const rootState = el.call('getRootState')
+    const rootState = s.root || s
 
     if (rootState.isPanning) {
       const t = rootState.transform || { x: 0, y: 0, scale: 1 }
@@ -148,9 +154,21 @@ export const CanvasViewport = {
 
       const targetNode = (rootState.nodes || []).find(n => n.id === rootState.draggingNodeId)
       if (targetNode) {
-        // Direct proxy mutation for performance + global tickle for reactivity
         targetNode.x = newX
         targetNode.y = newY
+        
+        const mainCanvas = el.CanvasContainer
+        if (mainCanvas && mainCanvas.NodesGroup) {
+          const nodesGroup = mainCanvas.NodesGroup
+          // Find the specific DOMQL component instance
+          const childrenArr = Object.values(nodesGroup).filter(c => c && c.state)
+          const nodeComp = childrenArr.find(c => c.state && c.state.id === rootState.draggingNodeId)
+          if (nodeComp) {
+            nodeComp.state.update({ x: newX, y: newY })
+          } else {
+            nodesGroup.update()
+          }
+        }
         rootState.update({ forceRender: Date.now() })
       }
       return
@@ -169,11 +187,11 @@ export const CanvasViewport = {
   },
 
   onMouseup: (e, el, s) => {
-    const rootState = el.call('getRootState')
+    const rootState = s.root || s
 
     if (rootState.isPanning) {
       rootState.update({ isPanning: false })
-      el.node.style.cursor = rootState.isSpacePressed ? 'grab' : ''
+      el.update({ cursor: rootState.isSpacePressed ? 'grab' : '' })
     }
 
     if (rootState.isDraggingNode) {
@@ -186,7 +204,7 @@ export const CanvasViewport = {
   },
 
   onMouseleave: (e, el, s) => {
-    const rootState = el.call('getRootState')
+    const rootState = s.root || s
     rootState.update({ isPanning: false, isDraggingNode: false, isDraggingWire: false })
     el.node.style.cursor = ''
   },
@@ -194,12 +212,13 @@ export const CanvasViewport = {
   onDragover: (e) => e.preventDefault(),
 
   onDrop: (e, el, s) => {
+    console.log('ON DROP CALLED', e.dataTransfer.getData('nodeType'))
     e.preventDefault()
     const nodeType = e.dataTransfer.getData('nodeType')
     if (!nodeType) return
 
     const rect = el.node.getBoundingClientRect()
-    const rootState = el.call('getRootState')
+    const rootState = s.root || s
     const t = rootState.transform || { x: 0, y: 0, scale: 1 }
     const canvasX = (e.clientX - rect.left - t.x) / t.scale
     const canvasY = (e.clientY - rect.top - t.y) / t.scale

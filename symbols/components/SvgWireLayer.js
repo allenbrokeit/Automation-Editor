@@ -19,6 +19,7 @@ export const SvgWireLayer = {
 
   WireGroup: {
     tag: 'g',
+    namespace: 'http://www.w3.org/2000/svg',
     attr: {
       'data-connections': (el, s) => {
         const root = s.root || s
@@ -51,6 +52,7 @@ export const SvgWireLayer = {
 
   DraftWireGroup: {
     tag: 'g',
+    namespace: 'http://www.w3.org/2000/svg',
     if: (el, s) => {
       const root = s.root || s
       return root.isDraggingWire && root.draftWire
@@ -58,6 +60,7 @@ export const SvgWireLayer = {
 
     DraftWirePath: {
       tag: 'path',
+      namespace: 'http://www.w3.org/2000/svg',
       pointerEvents: 'none',
       attr: {
         d: (el, s) => {

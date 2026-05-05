@@ -11,10 +11,8 @@
     "deploy": "npx smbls deploy"
   },
   "dependencies": {
-    "smbls": "3.8.9"
-  },
-  "peerDependencies": {
-    "@supabase/supabase-js": "^2.0.0"
+    "@supabase/supabase-js": "^2.102.1",
+    "smbls": "3.14.1"
   },
   "publishConfig": {
     "access": "restricted"
@@ -22,6 +20,7 @@
   "devDependencies": {
     "buffer": "^6.0.3",
     "parcel": "^2.16.4",
-    "parcel-bundler": "^1.12.5"
+    "parcel-bundler": "^1.12.5",
+    "puppeteer": "^24.42.0"
   }
 }
